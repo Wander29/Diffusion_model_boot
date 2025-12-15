@@ -1,0 +1,29 @@
+
+"""Now we're ready to build the diffusion model itself. 
+It will need to process both images and times. 
+We will encode the times using a sinusoidal encoding, as suggested in the DDPM paper, 
+just like in the [Attention is all you need](https://arxiv.org/abs/1706.03762) paper. 
+Given a vector of _m_ integers representing time indices (integers), 
+the layer returns an _m_ × _d_ matrix, where _d_ is the chosen embedding size."""
+
+"""Now let's build the model. In the Improved DDPM paper, 
+they use a UNet model. We'll create a UNet-like model, that processes the 
+image through `Conv2d` + `BatchNorm2d` layers and skip connections,
+ gradually downsampling the image (using `MaxPool2d` layers with `stride=2`), 
+ then growing it back again (using `Upsample` layers). 
+ Skip connections are also added across the downsampling part and the upsampling part. 
+ We also add the time encodings to the output of each block, 
+ after passing them through a `Linear` layer to resize them to the right dimension.
+
+* **Note**: an image's time encoding is added to every pixel in the image, 
+along the last axis (channels). So the number of units in the `Conv2d` layer 
+must correspond to the embedding size, and we must reshape the `time_enc` tensor 
+to add the width and height dimensions.
+* This UNet implementation was inspired by keras.io's 
+[image segmentation example](https://keras.io/examples/vision/oxford_pets_image_segmentation/), 
+as well as from the [official diffusion models implementation](https://github.com/hojonathanho/diffusion/blob/master/diffusion_tf/models/unet.py). 
+Compared to the first implementation, I added a few things, especially time encodings 
+and skip connections across down/up parts. 
+Compared to the second implementation, I removed a few things, especially the attention layers.
+ It seemed like overkill for Fashion MNIST, but feel free to add them.
+"""
