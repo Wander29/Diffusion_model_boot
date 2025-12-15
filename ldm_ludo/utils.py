@@ -28,7 +28,7 @@ def plot_image(image):
 def save_model(model):
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")  # e.g. 20251215_142530
     filename = f"weights/diff_model_{timestamp}.pt"
-    torch.save(diffusion_model.state_dict(), filename)
+    torch.save(model.state_dict(), filename)
 
 def load_last_model(model):
     files = glob.glob("weights/diff_model_*.pt")
