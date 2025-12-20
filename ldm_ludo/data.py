@@ -7,30 +7,8 @@ with the input and the target. The input is a `DiffusionSample`, and the target 
 the unscaled noise `eps`:"""
 
 import torch
-import torchvision
-import torchvision.transforms.v2 as Tv2
 from collections import namedtuple
 from ldm_ludo import diff_model as dm
-
-def loadDataset(dataset="mnist"):
-    toTensor = Tv2.Compose([Tv2.ToImage(), Tv2.ToDtype(torch.float32, scale=True)])
-    
-    if dataset == "mnist":
-        train_and_valid_data = torchvision.datasets.MNIST(
-            root="datasets", train=True, download=True, transform=toTensor)
-        test_data = torchvision.datasets.MNIST(
-            root="datasets", train=False, download=True, transform=toTensor)
-    elif dataset == "fashion_mnist":
-        train_and_valid_data = torchvision.datasets.FashionMNIST(
-            root="datasets", train=True, download=True, transform=toTensor)
-        test_data = torchvision.datasets.FashionMNIST(
-            root="datasets", train=False, download=True, transform=toTensor)
-
-    torch.manual_seed(42)
-    train_data, valid_data = torch.utils.data.random_split(
-        train_and_valid_data, [0.9, 0.1])
-
-    return train_data, valid_data, test_data
 
 class DiffusionDataset:
     def __init__(self, dataset, T, alpha_bars):

@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import torch 
 
-from ldm_ludo import utils
+import utils
 
 def plot_variance_schedule(alpha_bars, betas, T):
     # extra code – this cell generates Figure 18–21

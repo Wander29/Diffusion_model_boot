@@ -144,7 +144,7 @@ class DiffusionModel(nn.Module):
 # At the end, we get an image that looks like it's from the Fashion MNIST dataset. 
 # The equation for this reverse process is at the top of page 4 in the DDPM paper 
 # (step 4 in algorithm 2).
-def generate_ddpm(model, device, batch_size=32):
+def generate_ddpm(model, T, alphas, alpha_bars, betas, device, batch_size=32):
     model.eval()
     with torch.no_grad():
         xt = torch.randn([batch_size, 1, 28, 28], device=device)
@@ -166,7 +166,7 @@ def generate_ddpm(model, device, batch_size=32):
 
 """Some of these images are really convincing! Compared to GANs, diffusion models tend to generate more diverse images, and they have surpassed GANs in image quality. Moreover, training is much more stable. However, generating images takes *much* longer."""
 
-def generate_ddim(model, device, batch_size=32, num_steps=50, eta=0.85):
+def generate_ddim(model, T, alphas, alpha_bars, betas, device, batch_size=32, num_steps=50, eta=0.85):
     model.eval()
     with torch.no_grad():
         xt = torch.randn([batch_size, 1, 28, 28], device=device)
